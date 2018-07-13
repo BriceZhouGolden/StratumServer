@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>StratumServerDotNet</AssemblyName>
+    <RootNamespace>StratumServerDotNet</RootNamespace>
+    <PackageId>StratumServer</PackageId>
+    <Authors>Przemyslaw Herman</Authors>
+    <Company />
+    <Description>Stratum server and client for pools and other mining related software</Description>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>
