@@ -5,10 +5,12 @@
     <AssemblyName>StratumServerDotNet</AssemblyName>
     <RootNamespace>StratumServerDotNet</RootNamespace>
     <PackageId>StratumServer</PackageId>
-    <Authors>Przemyslaw Herman</Authors>
-    <Company />
+    <Authors>https://github.com/przpl</Authors>
+    <Company>https://github.com/przpl</Company>
     <Description>Stratum server and client for pools and other mining related software</Description>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/przpl/StratumServer</PackageProjectUrl>
+    <Product>StratumServer</Product>
   </PropertyGroup>
 
 </Project>
