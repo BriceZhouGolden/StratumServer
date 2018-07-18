@@ -26,17 +26,15 @@ namespace StratumServerDotNet
         private int _nextClientId;
         private readonly int _msgSizeLimit;
         private readonly TimeSpan _clientSendTimeout;
-        private CancellationTokenSource _serverCts, _listenCts = new CancellationTokenSource();
-
-        private const int LARGEST_PORT_NUMBER = UInt16.MaxValue;
+        private CancellationTokenSource _listenCts = new CancellationTokenSource();
 
         public StratumServer(IPAddress address, int port, int messageSizeLimitInBytes = 1024, TimeSpan clientSendTimeout = default(TimeSpan))
         {
             if (address == null)
                 throw new ArgumentNullException(nameof(address), "IP address cannot be null");
 
-            if (port < 0 || port > LARGEST_PORT_NUMBER)
-                throw new ArgumentOutOfRangeException(nameof(address), $"Port number must be between 0 and {LARGEST_PORT_NUMBER} but is {port}");
+            if (port < 0 || port > UInt16.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(address), $"Port number must be between 0 and {UInt16.MaxValue} but is {port}");
 
             if (messageSizeLimitInBytes < 1)
                 throw new ArgumentOutOfRangeException(nameof(messageSizeLimitInBytes), "Message size limit must be nonzero and positive");
@@ -65,8 +63,6 @@ namespace StratumServerDotNet
                 _listener = null;
                 throw;
             }
-
-            _serverCts = new CancellationTokenSource();
         }
 
         /// <summary>
@@ -77,14 +73,12 @@ namespace StratumServerDotNet
             if (_listener == null)
                 throw new InvalidOperationException("Stratum server is not started.");
 
-            TcpClient tcpClient = await Task.Run(_listener.AcceptTcpClientAsync, _serverCts.Token);
-            if (_serverCts.IsCancellationRequested)
-                return null;
-
+            TcpClient tcpClient = await _listener.AcceptTcpClientAsync();
+            
             var client = new StratumClient(tcpClient, _nextClientId, _msgSizeLimit, _clientSendTimeout);
+            client.Disconnected += OnClientDisconnected;
             _clients.Add(_nextClientId, client);
             _nextClientId++;
-            client.Disconnected += OnClientDisconnected;
 
             return client;
         }
@@ -97,7 +91,7 @@ namespace StratumServerDotNet
             _listenCts = new CancellationTokenSource();
             while (true)
             {
-                StratumClient client = await Task.Run(AcceptClientAsync, _listenCts.Token);
+                StratumClient client = await AcceptClientAsync();
                 if (_listenCts.IsCancellationRequested)
                     return;
                 OnClientConnected(new ClientEventArgs(client));
@@ -134,7 +128,6 @@ namespace StratumServerDotNet
             if (_listener == null)
                 return;
 
-            _serverCts.Cancel();
             _listener.Stop();
             _listener = null;
             DisconnectAllClients();
