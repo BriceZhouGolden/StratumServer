@@ -24,6 +24,11 @@ namespace StratumServerDotNet
         public bool Connected => _client.Connected;
 
         /// <summary>
+        /// Time that passed from last message received from the client. Allows detecting inactive clients.
+        /// </summary>
+        public TimeSpan TimeFromLastMsg => DateTime.UtcNow - _lastMsgTime;
+
+        /// <summary>
         /// Event is fired when client disconnects.
         /// </summary>
         public event DisconnectedEventHandler Disconnected;
@@ -118,8 +123,8 @@ namespace StratumServerDotNet
                 // ignore that user disconnection was caused by his error
             }
 
-            Disconnect();
             OnDisconnected(new ClientEventArgs(this));
+            Disconnect();
 
             return null;
         }
@@ -145,14 +150,6 @@ namespace StratumServerDotNet
         public void StopListening()
         {
             _listenCts.Cancel();
-        }
-
-        /// <summary>
-        /// Time that passed from last message received from the client. Allows detecting inactive clients.
-        /// </summary>
-        public TimeSpan TimeFromLastMsg()
-        {
-            return DateTime.UtcNow - _lastMsgTime;
         }
 
         private bool IsMessageSizeExceeded(int newBytesCount)
