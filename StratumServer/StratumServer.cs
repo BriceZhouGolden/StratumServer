@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace StratumServerDotNet
 {
-    public class StratumServer
+    public class StratumServer : IStratumServer
     {
         /// <summary>
         /// Collection of active (connected) clients.
         /// </summary>
-        public IEnumerable<StratumClient> Clients => _clients.Values;
+        public IEnumerable<IStratumClient> Clients => _clients.Values;
 
         /// <summary>
         /// Fired when new client is connected.
@@ -22,7 +22,7 @@ namespace StratumServerDotNet
         private TcpListener _listener;
         private readonly IPAddress _address;
         private readonly int _port;
-        private readonly Dictionary<int, StratumClient> _clients = new Dictionary<int, StratumClient>();
+        private readonly Dictionary<int, IStratumClient> _clients = new Dictionary<int, IStratumClient>();
         private int _nextClientId;
         private readonly int _msgSizeLimit;
         private readonly TimeSpan _clientSendTimeout;
@@ -68,7 +68,7 @@ namespace StratumServerDotNet
         /// <summary>
         /// Accepts a pending connection request. Server must be started before accepting stratum clients. Doesn't fire new client connected event.
         /// </summary>
-        public async Task<StratumClient> AcceptClientAsync()
+        public async Task<IStratumClient> AcceptClientAsync()
         {
             if (_listener == null)
                 throw new InvalidOperationException("Stratum server is not started.");
@@ -91,7 +91,7 @@ namespace StratumServerDotNet
             _listenCts = new CancellationTokenSource();
             while (true)
             {
-                StratumClient client = await AcceptClientAsync();
+                IStratumClient client = await AcceptClientAsync();
                 if (_listenCts.IsCancellationRequested)
                     return;
                 OnClientConnected(new ClientEventArgs(client));

@@ -4,9 +4,9 @@ namespace StratumServerDotNet
 {
     public class ClientEventArgs : EventArgs
     {
-        public StratumClient Client { get; }
+        public IStratumClient Client { get; }
 
-        public ClientEventArgs(StratumClient client)
+        public ClientEventArgs(IStratumClient client)
         {
             Client = client;
         }

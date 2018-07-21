@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StratumServerDotNet
 {
-    public class StratumClient
+    public class StratumClient : IStratumClient
     {
         public string IP => ((IPEndPoint)_client.Client.RemoteEndPoint)?.Address.ToString();
         /// <summary>
