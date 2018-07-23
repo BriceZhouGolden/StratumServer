@@ -15,6 +15,11 @@ namespace StratumServerDotNet
         public IEnumerable<IStratumClient> Clients => _clients.Values;
 
         /// <summary>
+        /// Is server active.
+        /// </summary>
+        public bool IsStarted => _listener != null;
+
+        /// <summary>
         /// Fired when new client is connected.
         /// </summary>
         public event ClientConnectedEventHandler ClientConnected;
@@ -50,7 +55,7 @@ namespace StratumServerDotNet
         /// </summary>
         public void Start()
         {
-            if (_listener != null)
+            if (IsStarted)
                 throw new InvalidOperationException("Stratum server is already running.");
 
             _listener = new TcpListener(_address, _port);
@@ -70,7 +75,7 @@ namespace StratumServerDotNet
         /// </summary>
         public async Task<IStratumClient> AcceptClientAsync()
         {
-            if (_listener == null)
+            if (!IsStarted)
                 throw new InvalidOperationException("Stratum server is not started.");
 
             TcpClient tcpClient = await _listener.AcceptTcpClientAsync();
@@ -123,11 +128,10 @@ namespace StratumServerDotNet
         /// </summary>
         public void Stop()
         {
-            StopListening();
-
-            if (_listener == null)
+            if (!IsStarted)
                 return;
 
+            StopListening();
             _listener.Stop();
             _listener = null;
             DisconnectAllClients();
