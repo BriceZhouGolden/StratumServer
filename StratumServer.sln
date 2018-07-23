@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StratumServer", "StratumServer\StratumServer.csproj", "{D3852B18-3642-4BB9-B06E-4FDCA555719C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StratumServer.Tests", "StratumServer.Tests\StratumServer.Tests.csproj", "{4718B538-B28A-4B9A-8AD4-2667182E0D01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D3852B18-3642-4BB9-B06E-4FDCA555719C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3852B18-3642-4BB9-B06E-4FDCA555719C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3852B18-3642-4BB9-B06E-4FDCA555719C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4718B538-B28A-4B9A-8AD4-2667182E0D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4718B538-B28A-4B9A-8AD4-2667182E0D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4718B538-B28A-4B9A-8AD4-2667182E0D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4718B538-B28A-4B9A-8AD4-2667182E0D01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
